@@ -8,7 +8,7 @@
 int main()
 {
     graphics::init();
-    Map map(Vector3(100, 100, 30), 78946516);
+    Map map(Vector3(100, 100, 30), 1000);
     map.generate();
     std::cout << map.getat(Vector3(0, 0, 0)) << std::endl;
     std::cout << map.getat(Vector3(0, 1, 0)) << std::endl;
@@ -21,31 +21,31 @@ int main()
     {
         
         graphics::render_begin();
-        graphics::camera::x += dx;
-        if (graphics::camera::x == 100 && dy != 1)
+        if (graphics::camera::x == 100 && graphics::camera::y == 0)
         {
             dx = 0;
             dy = 1;
         }
-        else if (graphics::camera::y == 100 && dx != -1)
+        else if (graphics::camera::y == 100 && graphics::camera::x == 0)
         {
-            dy = 0;
-            dx = -1;
-        }
-        else if (graphics::camera::x == 0 && dy != -1)
-        {
-            dx = 0;
             dy = -1;
+            dx = 0;
         }
-        else if (graphics::camera::y == 100 && dx != 1)
+        else if (graphics::camera::x == 100 && graphics::camera::y == 100)
+        {
+            dx = -1;
+            dy = 0;
+        }
+        else if (graphics::camera::y == 0 && graphics::camera::x == 0)
         {
             dx = 1;
             dy = 0;
         }
+        graphics::camera::x += dx;
         graphics::camera::y += dy;
         graphics::camera::z = 25;
-        graphics::camera::ax = 25;
-        graphics::camera::ay = 25;
+        graphics::camera::ax = 50;
+        graphics::camera::ay = 50;
         graphics::camera::az = 0;
         graphics::camera::vx = 0;
         graphics::camera::vy = 0;
@@ -57,10 +57,7 @@ int main()
             for (double y = margin; y < dy - margin; y++)
                 for (double z = 0; z < dz - 0; z++)
                 {
-                    if(map.getat(Vector3(x, y, z)))
-                    {
-                        graphics::render_cube(x, y, z);
-                    }
+                    graphics::render_cube(x, y, z, map.getat(Vector3(x, y, z)));
                 }
         graphics::render_end();
         SDL_Event event;

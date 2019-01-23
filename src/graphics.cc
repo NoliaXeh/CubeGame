@@ -13,12 +13,33 @@ namespace graphics::camera
 }
 namespace graphics
 {
+
+    void render_cube(double x, double y, double z, int id)
+    {
+        switch (id)
+        {
+        case 1:
+            render_cube(x, y, z, 120, 250, 140);
+            break;
+        case 2:
+            render_cube(x, y, z, 120, 120, 140);
+            break;
+        case 3:
+            render_cube(x, y, z, 80, 80, 255);
+            break;
+        default:
+            break;
+        }
+    }
     void render_cube(double x, double y, double z)
+    {
+        render_cube(x, y, z, 1);
+    }
+    void render_cube(double x, double y, double z, int r, int g, int b)
     {
         glBegin(GL_QUADS);
         double s = 1;
         s /= 2;
-        int r = 120, g = 255, b = 50;
         double l = 0.7;
         glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
         glVertex3d(x + s, y + s, z + s); // + + +

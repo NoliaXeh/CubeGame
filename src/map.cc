@@ -25,7 +25,7 @@ static size_t* noise(const Map& map, int seed, size_t max)
     {
         res[i] = std::rand() % max;
     }
-    for (size_t k = 0; k < 8; ++k)
+    for (size_t k = 0; k < 6; ++k)
     {
         for (size_t i = 1; i < x - 1; ++i)
             for (size_t j = 1; j < y - 1; ++j)
@@ -46,18 +46,15 @@ void Map::generate()
 {
     double x, y, z;
     dim_.get(x, y, z);
-    /*
-    this->fillat(Vector3(0, 0, 0), Vector3(int(x), int(y), 1), 1);
-    this->fillat(Vector3(0, 0, 1),
-                Vector3(int(x), int(y), int(z - 1)),
-                0);
-    */
     size_t* gen = noise(*this, seed_, 20);
     for (size_t i = 0; i < x * y; ++i)
     {
         size_t ix = i % (int)x;
         size_t iy = i / (int)y;
-        this->setat(Vector3(ix, iy, gen[i]), 1);
+        this->setat(Vector3(ix, iy, gen[i]), gen[i] < 5 ? 3 : 1);
+        for (size_t l = 0; l < gen[i]; ++l)
+            this->setat(Vector3(ix, iy, l), 2);
+
     }
 }
 
