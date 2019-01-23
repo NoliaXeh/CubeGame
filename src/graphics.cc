@@ -2,7 +2,15 @@
 #include <SDL/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include "graphics.hh"
 
+
+namespace graphics::camera
+{
+    double x, y, z;
+    double vx, vy, vz;
+    double ax, ay, az;
+}
 namespace graphics
 {
     void render_cube(double x, double y, double z)
@@ -51,70 +59,75 @@ namespace graphics
         glVertex3d(x + s, y + s, z - s);
         glVertex3d(x + s, y - s, z - s);
         glEnd();
-        /*
-        glLineWidth(2.0f);
-        glBegin(GL_LINES);
-        l = 0.2;
-        glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
-        //glColor3ub(255, 0, 0);
-        glVertex3d(x - s, y - s, z + s);
-        glVertex3d(x + s, y - s, z + s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x + s, y + s, z + s);
-        glVertex3d(x + s, y - s, z + s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x + s, y + s, z + s);
-        glVertex3d(x - s, y + s, z + s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x - s, y - s, z + s);
-        glVertex3d(x - s, y + s, z + s);
-        glEnd();
-        glBegin(GL_LINES);
-        
-        glVertex3d(x - s, y - s, z - s);
-        glVertex3d(x + s, y - s, z - s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x + s, y + s, z - s);
-        glVertex3d(x + s, y - s, z - s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x + s, y + s, z - s);
-        glVertex3d(x - s, y + s, z - s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x - s, y - s, z - s);
-        glVertex3d(x - s, y + s, z - s);
-        glEnd();
-        glBegin(GL_LINES);
+        if (0)
+        {
+            glLineWidth(1.0f);
+            glBegin(GL_LINES);
+            l = 0.2;
+            glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
+            //glColor3ub(255, 0, 0);
+            glVertex3d(x - s, y - s, z + s);
+            glVertex3d(x + s, y - s, z + s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x + s, y + s, z + s);
+            glVertex3d(x + s, y - s, z + s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x + s, y + s, z + s);
+            glVertex3d(x - s, y + s, z + s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x - s, y - s, z + s);
+            glVertex3d(x - s, y + s, z + s);
+            glEnd();
+            glBegin(GL_LINES);
+            
+            glVertex3d(x - s, y - s, z - s);
+            glVertex3d(x + s, y - s, z - s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x + s, y + s, z - s);
+            glVertex3d(x + s, y - s, z - s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x + s, y + s, z - s);
+            glVertex3d(x - s, y + s, z - s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x - s, y - s, z - s);
+            glVertex3d(x - s, y + s, z - s);
+            glEnd();
+            glBegin(GL_LINES);
 
-        glVertex3d(x - s, y - s, z - s);
-        glVertex3d(x - s, y - s, z + s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x + s, y - s, z - s);
-        glVertex3d(x + s, y - s, z + s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x + s, y + s, z - s);
-        glVertex3d(x + s, y + s, z + s);
-        glEnd();
-        glBegin(GL_LINES);
-        glVertex3d(x - s, y + s, z - s);
-        glVertex3d(x - s, y + s, z + s);
-        glEnd();*/
-
+            glVertex3d(x - s, y - s, z - s);
+            glVertex3d(x - s, y - s, z + s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x + s, y - s, z - s);
+            glVertex3d(x + s, y - s, z + s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x + s, y + s, z - s);
+            glVertex3d(x + s, y + s, z + s);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3d(x - s, y + s, z - s);
+            glVertex3d(x - s, y + s, z + s);
+            glEnd();
+        }
     }
 
     void render_begin()
     {
+        glClearColor(0.5f, 0.5f, 0.99f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        gluLookAt(-3, -3, 10, 1, 0, 0, 0, 0, 1);
+        gluLookAt(camera::x, camera::y, camera::z,
+                  camera::ax, camera::ay, camera::az,
+                  camera::vx, camera::vy, camera::vz);
     }
     void render_end()
     {
@@ -128,7 +141,16 @@ namespace graphics
         win = SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
         glEnable(GL_DEPTH_TEST);
         glMatrixMode(GL_PROJECTION);
-        gluPerspective(70.0 * 640.0 / 480.0, 640.0 / 480.0, 0.1, 100); 
+        gluPerspective(70.0 * 640.0 / 480.0, 640.0 / 480.0, 0.1, 100);
+        camera::x = 0;
+        camera::y = 0;
+        camera::z = 0;
+        camera::ax = 0;
+        camera::ay = 0;
+        camera::az = 0;
+        camera::vx = 0;
+        camera::vy = 0;
+        camera::vz = 0;
     }
     void quit()
     {

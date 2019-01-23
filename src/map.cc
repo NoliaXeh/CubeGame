@@ -20,25 +20,24 @@ static size_t* noise(const Map& map, int seed, size_t max)
     size_t x = map.getsize().get_x();
     size_t y = map.getsize().get_y();
     std::srand(seed);
-    size_t* tmp = new size_t[x * y];
     size_t* res = new size_t[x * y];
-    for (size_t i = 0; i < x * y; ++i)
+    for (size_t i = 0; i < (x * y); ++i)
+    {
         res[i] = std::rand() % max;
-
-    for (size_t k = 0; k < 1; ++k)
+    }
+    for (size_t k = 0; k < 8; ++k)
     {
         for (size_t i = 1; i < x - 1; ++i)
             for (size_t j = 1; j < y - 1; ++j)
             {
                 size_t r = 0;
+                r += res[i + j * x];
                 r += res[i + 1 + j * x];
                 r += res[i - 1 + j * x];
-                r += res[i + j * x - x];
-                r += res[i + j * x + x];
-                tmp[i] = r / 4;
+                r += res[i + (j + 1) * x];
+                r += res[i + (j - 1) * x];
+                res[i + j * x] = r / 5;
             }
-        for (size_t i = 0; i < x * y; ++i)
-            res[i] = tmp[i];
     }
     return res;
 }

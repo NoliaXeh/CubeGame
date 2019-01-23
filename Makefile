@@ -1,15 +1,16 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -Weffc++ -pedantic -std=c++17
+CXXFLAGS = -Wall -Wextra -Weffc++ -pedantic -std=c++17 -g
 
-CXX_SDL = -lSDL `sld-config --clfags --libs`
+CXX_SDL = -lSDL
+##`sdl-config --clfags --libs`
 CXX_OPENGL = -lGL -lGLU
 
 OBJS = src/cube.o							    \
 	src/vector3.o							    \
-	src/game.o							    \
 	src/block.o							    \
 	src/map.o							    \
 	src/graphics.o							    \
+	src/game.o							    \
 
 all: game
 
