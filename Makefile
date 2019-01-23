@@ -7,6 +7,7 @@ CXX_OPENGL = -lGL -lGLU
 
 OBJS = src/cube.o							    \
 	src/vector3.o							    \
+	src/entity.o							    \
 	src/block.o							    \
 	src/map.o							    \
 	src/graphics.o							    \
