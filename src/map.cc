@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include "map.hh"
 
+#define MAX(A, B) ((A) > (B) ? (A) : (B))
+
 Map::Map(const Vector3& dim)
     : Map(dim, 0)
 {}
@@ -51,7 +53,7 @@ void Map::generate()
     {
         size_t ix = i % (int)x;
         size_t iy = i / (int)y;
-        this->setat(Vector3(ix, iy, gen[i]), gen[i] < 5 ? 3 : 1);
+        this->setat(Vector3(ix, iy, MAX(5, gen[i])), gen[i] < 5 ? 3 : 1);
         for (size_t l = 0; l < gen[i]; ++l)
             this->setat(Vector3(ix, iy, l), 2);
 

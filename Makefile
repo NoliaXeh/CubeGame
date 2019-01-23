@@ -17,3 +17,6 @@ all: game
 
 game: ${OBJS}
 	${CXX} ${CXXFLAGS} $^ -o $@ ${CXX_SDL} ${CXX_OPENGL}
+
+clean:
+	rm -rf ${OBJS} game

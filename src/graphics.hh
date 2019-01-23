@@ -8,7 +8,8 @@ namespace graphics
 {
     void render_cube(double x, double y, double z);
     void render_cube(double x, double y, double z, int id);
-    void render_cube(double x, double y, double z, int r, int g, int b);
+    void render_cube(double x, double y, double z, int r, int g, int b, int a = 255);
+    void render_top(double x, double y, double z, int r, int g, int b, int a = 255);
     void render_begin();
     void render_end();
     extern SDL_Surface* win;

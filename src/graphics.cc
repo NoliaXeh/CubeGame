@@ -25,7 +25,7 @@ namespace graphics
             render_cube(x, y, z, 120, 120, 140);
             break;
         case 3:
-            render_cube(x, y, z, 80, 80, 255);
+            render_top(x, y, z, 80, 80, 255, 30);
             break;
         default:
             break;
@@ -35,46 +35,68 @@ namespace graphics
     {
         render_cube(x, y, z, 1);
     }
-    void render_cube(double x, double y, double z, int r, int g, int b)
+    void render_top(double x, double y, double z, int r, int g, int b, int a)
     {
         glBegin(GL_QUADS);
         double s = 1;
         s /= 2;
         double l = 0.7;
-        glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
+        /*
+        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x + s, y + s, z + s); // + + +
         glVertex3d(x + s, y + s, z - s); // + + -
         glVertex3d(x - s, y + s, z - s); // - + -
         glVertex3d(x - s, y + s, z + s); // - + +
         l = 0.6;
-        glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
+        */
+        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x + s, y - s, z + s); // + - +
         glVertex3d(x + s, y - s, z - s); // + - -
         glVertex3d(x + s, y + s, z - s); // + + -
         glVertex3d(x + s, y + s, z + s); // + + +
         l = 0.7;
-        glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
+        glEnd();
+    }
+    void render_cube(double x, double y, double z, int r, int g, int b, int a)
+    {
+        glBegin(GL_QUADS);
+        double s = 1;
+        s /= 2;
+        double l = 0.7;
+        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
+        glVertex3d(x + s, y + s, z + s); // + + +
+        glVertex3d(x + s, y + s, z - s); // + + -
+        glVertex3d(x - s, y + s, z - s); // - + -
+        glVertex3d(x - s, y + s, z + s); // - + +
+        l = 0.6;
+        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
+        glVertex3d(x + s, y - s, z + s); // + - +
+        glVertex3d(x + s, y - s, z - s); // + - -
+        glVertex3d(x + s, y + s, z - s); // + + -
+        glVertex3d(x + s, y + s, z + s); // + + +
+        l = 0.7;
+        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x - s, y - s, z + s); // - - +
         glVertex3d(x - s, y - s, z - s); // - - -
         glVertex3d(x + s, y - s, z - s); // + - -
         glVertex3d(x + s, y - s, z + s); // + - +
         l = 0.6;
         //back
-        glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
+        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x - s, y - s, z + s);
         glVertex3d(x - s, y - s, z - s);
         glVertex3d(x - s, y + s, z - s);
         glVertex3d(x - s, y + s, z + s);
         l = 1;
         //up
-        glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
+        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x - s, y - s, z + s);
         glVertex3d(x - s, y + s, z + s);
         glVertex3d(x + s, y + s, z + s);
         glVertex3d(x + s, y - s, z + s);
         l = 0.3;
         //down
-        glColor3ub((int)(r * l), (int)(g * l), (int)(b * l));
+        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x - s, y - s, z - s);
         glVertex3d(x - s, y + s, z - s);
         glVertex3d(x + s, y + s, z - s);
@@ -160,7 +182,9 @@ namespace graphics
     {
         SDL_Init(SDL_INIT_VIDEO);
         win = SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
         glMatrixMode(GL_PROJECTION);
         gluPerspective(70.0 * 640.0 / 480.0, 640.0 / 480.0, 0.1, 100);
         camera::x = 0;
