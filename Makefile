@@ -12,6 +12,7 @@ OBJS = src/cube.o							    \
 	src/map.o							    \
 	src/graphics.o							    \
 	src/game.o							    \
+	src/player.o							    \
 
 all: game
 

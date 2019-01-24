@@ -4,49 +4,20 @@
 #include "vector3.hh"
 #include "map.hh"
 #include "graphics.hh"
+#include "player.hh"
 
 int main()
 {
     graphics::init();
     Map map(Vector3(100, 100, 30), 1000);
     map.generate();
-    std::cout << map.getat(Vector3(0, 0, 0)) << std::endl;
-    std::cout << map.getat(Vector3(0, 1, 0)) << std::endl;
-    std::cout << map.getat(Vector3(0, 2, 0)) << std::endl;
-    std::cout << map.getat(Vector3(0, 3, 0)) << std::endl;
-    std::cout << map.getat(Vector3(2, 0, 2)) << std::endl;
-    int dx = 1;
-    int dy = 0;
+    Player p(Vector3(20, 20, 20), "Nolia");
+    p.trace();
+    p.bind_camera();
     for (;;)
     {
         
         graphics::render_begin();
-        if (graphics::camera::x == 100 && graphics::camera::y == 0)
-        {
-            dx = 0;
-            dy = 1;
-        }
-        else if (graphics::camera::y == 100 && graphics::camera::x == 0)
-        {
-            dy = -1;
-            dx = 0;
-        }
-        else if (graphics::camera::x == 100 && graphics::camera::y == 100)
-        {
-            dx = -1;
-            dy = 0;
-        }
-        else if (graphics::camera::y == 0 && graphics::camera::x == 0)
-        {
-            dx = 1;
-            dy = 0;
-        }
-        graphics::camera::x += dx;
-        graphics::camera::y += dy;
-        graphics::camera::z = 25;
-        graphics::camera::ax = 50;
-        graphics::camera::ay = 50;
-        graphics::camera::az = 0;
         graphics::camera::vx = 0;
         graphics::camera::vy = 0;
         graphics::camera::vz = 1;
@@ -64,7 +35,12 @@ int main()
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)
-                exit(0);
+                goto end_of_the_game;
         }
+        p.update();
+        p.render();
     }
+end_of_the_game:
+    p.untrace();
+    SDL_Quit();
 }
