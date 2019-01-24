@@ -76,6 +76,7 @@ void Player::update()
         graphics::camera::ay = y + ay;
         graphics::camera::az = z + az;
     }
+    dir_.rotate(Vector3(0, 0, 0.01));
 }
 void Player::set_map(Map* map)
 {

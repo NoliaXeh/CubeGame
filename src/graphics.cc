@@ -3,7 +3,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "graphics.hh"
-
+#include <cstdlib>
 
 namespace graphics::camera
 {
@@ -62,39 +62,40 @@ namespace graphics
         glBegin(GL_QUADS);
         double s = 1;
         s /= 2;
-        double l = 0.7;
+        double d = 0;
+        double l = 0.7 + d;
         glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x + s, y + s, z + s); // + + +
         glVertex3d(x + s, y + s, z - s); // + + -
         glVertex3d(x - s, y + s, z - s); // - + -
         glVertex3d(x - s, y + s, z + s); // - + +
-        l = 0.6;
+        l = 0.6 + d;
         glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x + s, y - s, z + s); // + - +
         glVertex3d(x + s, y - s, z - s); // + - -
         glVertex3d(x + s, y + s, z - s); // + + -
         glVertex3d(x + s, y + s, z + s); // + + +
-        l = 0.7;
+        l = 0.7 + d;
         glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x - s, y - s, z + s); // - - +
         glVertex3d(x - s, y - s, z - s); // - - -
         glVertex3d(x + s, y - s, z - s); // + - -
         glVertex3d(x + s, y - s, z + s); // + - +
-        l = 0.6;
+        l = 0.6 + d;
         //back
         glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x - s, y - s, z + s);
         glVertex3d(x - s, y - s, z - s);
         glVertex3d(x - s, y + s, z - s);
         glVertex3d(x - s, y + s, z + s);
-        l = 1;
+        l = 0.9 + d;
         //up
         glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x - s, y - s, z + s);
         glVertex3d(x - s, y + s, z + s);
         glVertex3d(x + s, y + s, z + s);
         glVertex3d(x + s, y - s, z + s);
-        l = 0.3;
+        l = 0.3 + d;
         //down
         glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
         glVertex3d(x - s, y - s, z - s);
@@ -186,7 +187,7 @@ namespace graphics
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glMatrixMode(GL_PROJECTION);
-        gluPerspective(70.0 * 640.0 / 480.0, 640.0 / 480.0, 0.1, 100);
+        gluPerspective(45.0 * 640.0 / 480.0, 640.0 / 480.0, 0.1, 100);
         camera::x = 0;
         camera::y = 0;
         camera::z = 0;

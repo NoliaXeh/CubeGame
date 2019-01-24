@@ -6,7 +6,28 @@ class Vector3
         Vector3() = default;
         Vector3(double x, double y, double z);
         ~Vector3() = default;
+        
+        double norm() const;
+        Vector3& normalize();
+
+        Vector3& rotate(const Vector3& angle);
+
         Vector3& operator=(const Vector3&) = default;
+        Vector3 operator+(const Vector3& vect) const;
+        Vector3 operator+(double n) const;
+        Vector3 operator-(const Vector3& vect) const;
+        Vector3 operator-(double n) const;
+        Vector3 operator-() const;
+        double operator*(const Vector3& vect) const;
+        Vector3 operator*(double n) const;
+        Vector3 operator^(const Vector3& vect) const;
+        Vector3& operator^=(const Vector3& vect);
+        Vector3& operator*=(double n);
+        Vector3& operator+=(const Vector3& vect);
+        Vector3& operator+=(double n);
+        Vector3& operator-=(const Vector3& vect);
+        Vector3& operator-=(double n);
+
         void get(double& x, double &y, double &z) const;
         void set(double x, double y, double z);
         double get_x() const;

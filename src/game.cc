@@ -9,7 +9,7 @@
 int main()
 {
     graphics::init();
-    Map map(Vector3(100, 100, 30), 1000);
+    Map map(Vector3(100, 100, 30), 666);
     map.generate();
     Player p(Vector3(20, 20, 20), "Nolia");
     p.trace();
