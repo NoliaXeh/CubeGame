@@ -10,7 +10,12 @@ class Vector3
         double norm() const;
         Vector3& normalize();
 
+        double get_phi() const;
+        double get_theta() const;
+        double get_ro() const;
+
         Vector3& rotate(const Vector3& angle);
+        Vector3& spherical_rotate(double phi, double teta);
 
         Vector3& operator=(const Vector3&) = default;
         Vector3 operator+(const Vector3& vect) const;

@@ -3,6 +3,8 @@
 #include "entity.hh"
 #include "player.hh"
 #include "graphics.hh"
+#include <SDL/SDL.h>
+#include <cmath>
 
 Player* Player::camera_bind_ = nullptr;
 
@@ -76,7 +78,25 @@ void Player::update()
         graphics::camera::ay = y + ay;
         graphics::camera::az = z + az;
     }
-    dir_.rotate(Vector3(0, 0, 0.01));
+    double v = 0;
+    double h = 0;
+    
+    int mx, my;
+    const int cx = 320, cy = 240;
+    SDL_GetMouseState(&mx, &my);
+    
+    h = 2.0 * 1 / ( 1.0 +  std::exp((mx - cx) * 0.01)) - 1.0;
+    v = 2.0 * 1 / ( 1.0 +  std::exp((my - cy) * 0.01)) - 1.0;
+    v *= -0.5;
+    h *= 0.5; 
+    dir_.spherical_rotate(v, h);
+    SDL_PumpEvents();
+    const char *keys = SDL_GetKeyboqrdState(0);
+    if (0 || keys[SDL_SCANCODE_Z])
+        return;
+
+    this->set_pos((this->dir_ * 0.1) + this->get_pos());
+    SDL_WarpMouse(cx, cy);
 }
 void Player::set_map(Map* map)
 {

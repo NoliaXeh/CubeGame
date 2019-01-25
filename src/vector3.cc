@@ -19,28 +19,33 @@ Vector3& Vector3::normalize()
     return *this;
 }
 
+double Vector3::get_phi() const
+{
+    return acos(z_ / this->get_ro());
+}
+double Vector3::get_theta() const
+{
+    return std::atan2(y_, x_);
+}
+double Vector3::get_ro() const
+{
+    return this->norm();
+}
+
 /* Rotation */
+Vector3& Vector3::spherical_rotate(double phi, double theta)
+{
+    phi += this->get_phi();
+    theta += this->get_theta();
+    double ro = this->get_ro();
+    x_ = ro * std::sin(phi) * std::cos(theta);
+    y_ = ro * std::sin(phi) * std::sin(theta);
+    z_ = ro * std::cos(phi);
+    return *this;
+}
+
 Vector3& Vector3::rotate(const Vector3& angle)
 {
-    /*
-    double n = this->norm();
-    this->normalize();
-    double xa, ya, za;
-    angle.get(xa, ya ,za);
-    
-    //xa += std::acos(x_) * (std::asin(x_) > 0 ? 1 : -1);
-    ya += std::acos(y_) * (std::asin(y_) > 0 ? 1 : -1);
-    //za += std::acos(z_) * (std::asin(z_) > 0 ? 1 : -1);
-    
-    Vector3 tmp(xa, ya, za);
-    tmp.normalize();
-    tmp.get(xa, ya, za);
-    std::cout << (ya / 3.1415 * 180) << '\n';
-    x_ = std::cos(xa);
-    //y_ = std::cos(ya);
-    z_ = std::cos(za);
-    this->normalize() *= n;
-    return *this;*/
     double a = angle.z_;
     double x = std::cos(a) * x_ + std::sin(a) * y_;
     double y = -std::sin(a) * x_ + std::cos(a) * y_;

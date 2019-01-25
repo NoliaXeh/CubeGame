@@ -22,10 +22,10 @@ namespace graphics
             render_cube(x, y, z, 120, 250, 140);
             break;
         case 2:
-            render_cube(x, y, z, 120, 120, 140);
+            render_cube(x, y, z, 220, 220, 240);
             break;
         case 3:
-            render_top(x, y, z, 80, 80, 255, 30);
+            render_top(x, y, z, 80, 80, 255, 200);
             break;
         default:
             break;
@@ -40,21 +40,12 @@ namespace graphics
         glBegin(GL_QUADS);
         double s = 1;
         s /= 2;
-        double l = 0.7;
-        /*
+        double l = 1;
         glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
-        glVertex3d(x + s, y + s, z + s); // + + +
-        glVertex3d(x + s, y + s, z - s); // + + -
-        glVertex3d(x - s, y + s, z - s); // - + -
-        glVertex3d(x - s, y + s, z + s); // - + +
-        l = 0.6;
-        */
-        glColor4ub((int)(r * l), (int)(g * l), (int)(b * l), a);
-        glVertex3d(x + s, y - s, z + s); // + - +
-        glVertex3d(x + s, y - s, z - s); // + - -
-        glVertex3d(x + s, y + s, z - s); // + + -
-        glVertex3d(x + s, y + s, z + s); // + + +
-        l = 0.7;
+        glVertex3d(x - s, y - s, z + s);
+        glVertex3d(x - s, y + s, z + s);
+        glVertex3d(x + s, y + s, z + s);
+        glVertex3d(x + s, y - s, z + s);
         glEnd();
     }
     void render_cube(double x, double y, double z, int r, int g, int b, int a)
