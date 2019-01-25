@@ -28,6 +28,7 @@ public:
     bool is_camera_bind() const;
     void bind_camera();
     void unbind_camera();
+
 private:
     void log(const std::string& str) const;
     int hp_;
@@ -38,4 +39,5 @@ private:
     Vector3 dir_;
     bool is_camera_bind_;
     static Player* camera_bind_;
+    Vector3 celerity_;
 };

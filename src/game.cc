@@ -14,6 +14,7 @@ int main()
     Player p(Vector3(20, 20, 20), "Nolia");
     p.trace();
     p.bind_camera();
+    p.set_map(&map);
     for (;;)
     {
         

@@ -25,7 +25,7 @@ namespace graphics
             render_cube(x, y, z, 220, 220, 240);
             break;
         case 3:
-            render_top(x, y, z, 80, 80, 255, 200);
+            render_top(x, y, z - 0.2, 80, 80, 255, 200);
             break;
         default:
             break;
@@ -174,6 +174,7 @@ namespace graphics
     {
         SDL_Init(SDL_INIT_VIDEO);
         win = SDL_SetVideoMode(640, 480, 32, SDL_OPENGL);
+        SDL_ShowCursor(SDL_DISABLE);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);

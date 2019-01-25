@@ -17,6 +17,7 @@ Player::Player(const Vector3& pos)
     , name_             ("Player")
     , dir_              (Vector3(1, 0, 0))
     , is_camera_bind_   (false)
+    , celerity_         (0, 0, 0)
 {}
 Player::Player(const Vector3& pos, const std::string& name)
     : Entity            (pos)
@@ -27,6 +28,7 @@ Player::Player(const Vector3& pos, const std::string& name)
     , name_             (name)
     , dir_              (Vector3(1, 0, 0))
     , is_camera_bind_   (false)
+    , celerity_         (0, 0, 0)
 {}
 void Player::damage(int amount)
 {
@@ -64,13 +66,13 @@ void Player::revive()
 }
 void Player::update()
 {
-    //this->log("Player::update() : called");
-    double x, y, z;
-    this->get_pos().get(x, y, z);
-    double ax, ay, az;
-    this->get_dir().get(ax, ay, az);
+    /* attach camera to player */
     if (is_camera_bind_)
     {
+        double x, y, z;
+        this->get_pos().get(x, y, z);
+        double ax, ay, az;
+        this->get_dir().get(ax, ay, az);
         graphics::camera::x = x;
         graphics::camera::y = y;
         graphics::camera::z = z;
@@ -78,25 +80,56 @@ void Player::update()
         graphics::camera::ay = y + ay;
         graphics::camera::az = z + az;
     }
-    double v = 0;
-    double h = 0;
+    /* move head */
+    Uint8 flags = SDL_GetAppState();
+    if (flags & SDL_APPINPUTFOCUS)
+    {
+        double v = 0;
+        double h = 0;
     
-    int mx, my;
-    const int cx = 320, cy = 240;
-    SDL_GetMouseState(&mx, &my);
+        int mx, my;
+        const int cx = 320, cy = 240;
+        SDL_GetMouseState(&mx, &my);
     
-    h = 2.0 * 1 / ( 1.0 +  std::exp((mx - cx) * 0.01)) - 1.0;
-    v = 2.0 * 1 / ( 1.0 +  std::exp((my - cy) * 0.01)) - 1.0;
-    v *= -0.5;
-    h *= 0.5; 
-    dir_.spherical_rotate(v, h);
+        h = 2.0 * 1 / ( 1.0 +  std::exp((mx - cx) * 0.01)) - 1.0;
+        v = 2.0 * 1 / ( 1.0 +  std::exp((my - cy) * 0.01)) - 1.0;
+        v *= -0.5;
+        h *= 0.5; 
+        dir_.spherical_rotate(v, h);
+        SDL_WarpMouse(cx, cy);
+    }
     SDL_PumpEvents();
-    const char *keys = SDL_GetKeyboqrdState(0);
-    if (0 || keys[SDL_SCANCODE_Z])
-        return;
+    const Uint8 *keys = SDL_GetKeyState(0);
+    double speed = 0.5;
+    double move = 0;
+    if (keys[SDLK_z])
+        move = speed;
 
-    this->set_pos((this->dir_ * 0.1) + this->get_pos());
-    SDL_WarpMouse(cx, cy);
+    if (keys[SDLK_s])
+        move = -speed;
+
+    if (keys[SDLK_SPACE])
+        celerity_.set(0, 0, 1);
+    while (map_->getat(this->get_pos()) != 0)
+        this->set_pos(this->get_pos() + Vector3(0, 0, 0.1));
+    const Vector3 gravity(0, 0, -0.2);
+    celerity_ += gravity;
+    Vector3 move_dir(dir_);
+    move_dir.set_z(0);
+    auto old_pos = this->get_pos();
+    this->set_pos((move_dir * move) + old_pos);
+    auto new_pos = this->get_pos();
+    if (0 && map_->getat(new_pos - Vector3(0, 0, 1)) != 0)
+        this->set_pos(old_pos);
+    
+    old_pos = this->get_pos();
+    this->set_pos(old_pos + celerity_);
+    new_pos = this->get_pos();
+    if (map_->getat(new_pos - Vector3(0, 0, 1)) != 0)
+    {
+        this->set_pos(old_pos);
+        celerity_.set(0, 0, 0);
+    }
 }
 void Player::set_map(Map* map)
 {
